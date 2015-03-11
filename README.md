@@ -4,29 +4,22 @@
 
 ## install
 
-**not for the faint of heart**
-
-* install npm
-
-* install bower and coffee-react from npm
 ```sh
-npm install -g bower
-npm install -g coffee-react
-```
+# install npm, and install python deps
+conda install npm blaze -c cpcloud -c blaze
 
-* `cd` to the repo
-* run `bower`
+# install spark 1.3
+conda install -c https://conda.binstar.org/blaze/channel/dev spark
 
-```sh
+# install bower and coffee-react from npm
+npm install -g bower coffee-react
+
+# clone the repo
+git clone git://github.com/cpcloud/flask-spark
+
+cd flask-spark
+
 bower install
-```
-
-* install miniconda
-
-* install blaze and co.
-
-```sh
-conda install -c blaze blaze
 ```
 
 ## Example
@@ -43,20 +36,21 @@ In [4]: df = pd.DataFrame({'a': np.random.randn(1000),
 
 In [5]: from blaze import Server
 
-In [6]: Server({'db': df}).run(host='127.0.0.1', port=6363)  # <- blocks
+In [6]: Server({'db': df}).run()  # <- blocking call, default port is 6363
 ```
 
 Fire up two more terminals
 * one for the coffee-script jsx watcher
 * one for the application
 
-Coffee Script
+Coffee Script JSX
 ```sh
+# from the flask-spark directory
 cjsx --compile --bare --output app/static/js --watch app/static/coffee
 ```
 
 Application
 ```sh
-cd wherever/you/cloned/flask-spark
+# same flask-spark dir
 ./run.sh
 ```
