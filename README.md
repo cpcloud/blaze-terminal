@@ -1,6 +1,6 @@
-# flask-spark
+# blaze-terminal
 
-**only works on mac os x**
+**only tested on mac os x, but will probably work on linux too**
 
 ## install
 
@@ -15,9 +15,9 @@ conda install -c https://conda.binstar.org/blaze/channel/dev spark
 npm install -g bower coffee-react
 
 # clone the repo
-git clone git://github.com/cpcloud/flask-spark
+git clone git://github.com/cpcloud/blaze-terminal
 
-cd flask-spark
+cd blaze-terminal
 
 bower install
 ```
@@ -45,12 +45,12 @@ Fire up two more terminals
 
 Coffee Script JSX
 ```sh
-# from the flask-spark directory
+# from the blaze-terminal directory
 cjsx --compile --bare --output app/static/js --watch app/static/coffee
 ```
 
 Application
 ```sh
-# same flask-spark dir
+# same blaze-terminal dir
 ./run.sh
 ```
