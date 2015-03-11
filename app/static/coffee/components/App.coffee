@@ -7,11 +7,14 @@ define [
 ], (React, ReactBootstrap, AvailableTables, $, Terminal) ->
 
     PageHeader = ReactBootstrap.PageHeader
+    Panel = ReactBootstrap.Panel
 
     React.createClass
         render: ->
-            <div className="content">
+            <div className="container">
                 <PageHeader>Blaze Terminal</PageHeader>
                 <Terminal />
-                <AvailableTables url="/data/tables" />
+                <Panel header={<h3>Tables in <code>db</code></h3>}>
+                    <AvailableTables url="/data/tables" />
+                </Panel>
             </div>
