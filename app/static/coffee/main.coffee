@@ -10,7 +10,7 @@ require.config
         lodash: '../libs/lodash/lodash.min'
 
 require [
-    'react',
+    'react'
     'components/App'
 ], (React, App) ->
     React.render <App />, document.getElementById('app')
