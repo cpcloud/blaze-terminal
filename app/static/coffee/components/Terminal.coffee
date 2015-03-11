@@ -5,24 +5,20 @@ define [
 ], (React, $) ->
 
     React.createClass
-        propTypes:
-            parse: React.PropTypes.func
-
-        getDefaultProps: ->
-            parse: (query) -> query
-
         componentDidMount: ->
-            self = this
             blaze = ->
                 @push(((command, term) ->
-                    $.jrpc('/compute', 'blaze', [command],
-                           (json) -> term.echo(json.output))
-                    return),
-                    {prompt: 'blaze> '})
+                         $.jrpc('/compute', 'blaze', [command],
+                                (json) -> term.echo(json.output))
+                         return),
+                {
+                    prompt: 'blaze> '
+                })
                 return
             if @isMounted()
-                $(@getDOMNode()).css("overflow: auto")
-                $(@getDOMNode()).terminal([{
+                node = $(@getDOMNode())
+                node.css("overflow: auto")
+                node.terminal([{
                     blaze: blaze
                 }], {
                         prompt: '> '
