@@ -30,7 +30,7 @@ define [
                 <tr key={i}>
                     <td key={i + 1}><code>{row.name}</code></td>
                     <td key={i + 2}>
-                        <Table>
+                        <Table hover condensed>
                             <thead>
                                 <th>Column</th>
                                 <th>Type</th>
@@ -45,7 +45,7 @@ define [
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>DataShape</th>
+                        <th>dshape</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,4 +54,7 @@ define [
             </Table>
 
         render: ->
-            if not @state.loading then @getFullTable() else <div />
+            if not @state.loading
+                @getFullTable()
+            else
+                <div />
