@@ -6,15 +6,17 @@ define [
 
     React.createClass
         componentDidMount: ->
+            terminal = (command, term) ->
+                $.jrpc('/compute', 'blaze', [command],
+                       (json) -> term.echo(json.output))
+                return
+
             blaze = ->
-                @push(((command, term) ->
-                         $.jrpc('/compute', 'blaze', [command],
-                                (json) -> term.echo(json.output))
-                         return),
-                {
+                @push(terminal, {
                     prompt: 'blaze> '
                 })
                 return
+
             if @isMounted()
                 node = $(@getDOMNode())
                 node.css("overflow: auto")
