@@ -1,6 +1,7 @@
 import string
 from itertools import cycle
 from multiprocessing import cpu_count
+from argparse import ArgumentParser
 
 import numpy as np
 import pandas as pd
@@ -8,7 +9,6 @@ import psutil
 
 from cytoolz import take
 from pyspark import SparkContext, HiveContext, SparkConf
-from blaze import Server, Data
 
 
 def get_conf():
@@ -21,15 +21,35 @@ def get_conf():
     conf.set('spark.driver.memory', '%dg' % gb_per_core)
 
 
-if __name__ == '__main__':
+def create_and_register(sql, df, name):
+    sdf = sql.createDataFrame(df)
+    sql.registerDataFrameAsTable(sdf, name)
+    sql.cacheTable(name)
+
+
+def main(args):
+    from blaze import Server
     sc = SparkContext('local[*]', 'app', conf=get_conf())
     sql = HiveContext(sc)
 
-    n = 1000000
+    n = args.nrows
     df = pd.DataFrame({'a': np.random.randn(n),
                        'b': np.random.randint(10, size=n),
                        'c': list(take(n, cycle(string.ascii_uppercase)))})
-    sdf = sql.createDataFrame(df)
-    sql.registerDataFrameAsTable(sdf, 'df')
-    sql.cacheTable('df')
-    Server(Data(sql)).run()
+    df2 = pd.DataFrame({'A': np.random.randn(n),
+                        'B': np.random.randint(10, size=n),
+                        'C': list(take(n, cycle(string.ascii_uppercase)))})
+
+    # do hive things
+    create_and_register(sql, df, 'foo')
+    create_and_register(sql, df2, 'bar')
+
+    # run blaze server
+    Server(sql).run()
+
+
+if __name__ == '__main__':
+    p = ArgumentParser()
+    p.add_argument('nrows', type=int,
+                   help='Number of rows of a fake dataset to create')
+    main(p.parse_args())
